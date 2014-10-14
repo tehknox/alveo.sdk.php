@@ -1,0 +1,14 @@
+{
+    "name": "alveo/sdk",
+    "description": "Alveo Labs PHP SDK.",
+    "require": {
+        "rmccue/requests": ">=1.0"
+    },
+    "authors": [
+        {
+            "name": "Frederick Lebel",
+            "email": "frederick.lebel@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
