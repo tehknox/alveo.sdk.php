@@ -30,4 +30,10 @@ class SDK
     {
         return $this->config['endpoint'];
     }
+
+    public function getProducts()
+    {
+        $products = new Alveo\Models\Product();
+        $products->getProducts($this->session, $this->config->getEndpoint());
+    }
 } 

@@ -15,4 +15,5 @@ $configuration = array(
     'endpoint' => 'https://api.alveo.io/v1/'
 );
 $AlveoSDK = new Alveo\SDK($configuration);
-echo $AlveoSDK->auth('frederick.lebel@gmail.com', 'cacacaca');
+$AlveoSDK->auth('frederick.lebel@gmail.com', 'cacacaca');
+$AlveoSDK->getProducts();
