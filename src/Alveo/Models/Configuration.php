@@ -1,6 +1,6 @@
 <?php
 
-namespace Alveo;
+namespace Alveo\Models;
 
 use Requests;
 

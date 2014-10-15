@@ -2,7 +2,8 @@
     "name": "alveo/sdk",
     "description": "Alveo Labs PHP SDK.",
     "require": {
-        "rmccue/requests": ">=1.0"
+        "rmccue/requests": ">=1.0",
+        "aura/session": "dev-master"
     },
     "authors": [
         {
@@ -10,5 +11,10 @@
             "email": "frederick.lebel@gmail.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "Alveo": "src/"
+        }
+    }
 }

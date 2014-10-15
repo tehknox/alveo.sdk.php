@@ -2,20 +2,28 @@
 
 namespace Alveo;
 
+use Alveo;
 
 class SDK
 {
     private $config;
+    private $session;
 
     public function __construct($params)
     {
-        $this->config = new Configuration($params);
+        $this->config = new Alveo\Models\Configuration($params);
+        $this->session = new Alveo\Models\Session($this->config->getProjectId(), $this->config->getApplicationKey());
+        if (isset($_COOKIE['alveo_sdk_php_id'])) {
+            $this->session->setId($_COOKIE['alveo_sdk_php_id']);
+        }
+        else {
+            $this->session->setSessionIdFromAPI();
+        }
     }
 
-    public function auth($params)
+    public function auth($username, $password)
     {
-        $headers = array();
-        $req = Requests::get($this->getEndpoint(), $headers, $params);
+        return $this->session->updateSession($this->config->getEndpoint(), $username, $password);
     }
 
     private function getEndpoint()
