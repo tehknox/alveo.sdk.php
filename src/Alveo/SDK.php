@@ -33,7 +33,6 @@ class SDK
         $products = new Alveo\Collection\Products();
         $productList = $products->getProducts($this->session, $this->config->getEndpoint());
         $tempProduct = array();
-
         foreach ($productList as $product) {
             $tempProduct[] = new Alveo\Models\Product($product->_id, $product->created_at, $product->image, $product->is_online, $product->is_salable, $product->is_taxable, $product->metadata, $product->name, $product->options, $product->sku, $product->price, $product->updated_at);
         }

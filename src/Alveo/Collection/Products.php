@@ -3,11 +3,12 @@
 namespace Alveo\Collection;
 
 use Requests;
+use Alveo;
 
 class Products
 {
 
-    public function getProducts(Session $session, $endpoint)
+    public function getProducts(Alveo\Models\Session $session, $endpoint)
     {
         $headers = array(
             'Project-Id' => $session->getProjectId(),
@@ -19,11 +20,10 @@ class Products
         $request = Requests::get($endpoint . 'products', $headers);
         $data = json_decode($request->body);
 
-
         return $data;
     }
 
-    public function getProductById(Session $session, $endpoint, $_id)
+    public function getProductById(Alveo\Models\Session $session, $endpoint, $_id)
     {
         $headers = array(
             'Project-Id' => $session->getProjectId(),
