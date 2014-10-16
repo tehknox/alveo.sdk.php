@@ -25,54 +25,6 @@ class Session {
     /**
      * @return mixed
      */
-    public function getId()
-    {
-        return $this->_id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->_id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getApplicationId()
-    {
-        return $this->applicationId;
-    }
-
-    /**
-     * @param mixed $applicationId
-     */
-    public function setApplicationId($applicationId)
-    {
-        $this->applicationId = $applicationId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getProjectId()
-    {
-        return $this->projectId;
-    }
-
-    /**
-     * @param mixed $projectId
-     */
-    public function setProjectId($projectId)
-    {
-        $this->projectId = $projectId;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getCreatedAt()
     {
         return $this->createdAt;
@@ -134,25 +86,11 @@ class Session {
         $this->updatedAt = $updatedAt;
     }
 
-    public function setSessionIdFromAPI()
+    public function updateSession($endpoint, $username, $password)
     {
-        $headers = array(
-            'Project-Id' => $this->getProjectId(),
-            'Application-Key' => $this->getApplicationId(),
-            'Content-Type' => 'application/json'
-        );
-
-        $request = Requests::post('https://api.alveo.io/v1/sessions', $headers, '{}');
-        $_id = json_decode($request->body);
-        setcookie("alveo_sdk_php_id", $_id->_id, time()+360000);
-        $this->setId($_id->_id);
-    }
-
-    public function updateSession($endpoint, $username, $password) {
         if (isset($_COOKIE['alveo_sdk_php_id'])) {
             $this->setId($_COOKIE['alveo_sdk_php_id']);
-        }
-        else {
+        } else {
             $this->setSessionIdFromAPI();
         }
 
@@ -166,13 +104,84 @@ class Session {
         $request = Requests::put($endpoint . 'sessions/' . $this->getId(), $headers, '{"email": "' . $username . '", "password": "' . $password . '"}');
         $data = json_decode($request->body);
 
-        if ($data->key == 10019) {
-            return 'Already Logged In';
-        }
-        else {
-            return 'Welcome!';
+        if (isset($data->customer_id)) {
+            setcookie("alveo_is_auth", true, time() + 360000);
+            setcookie("alveo_customer_id", $data->customer_id, time() + 360000);
+        } else {
+            setcookie("alveo_is_auth", false, time() + 360000);
         }
 
+    }
+
+    public function setSessionIdFromAPI()
+    {
+        $headers = array(
+            'Project-Id' => $this->getProjectId(),
+            'Application-Key' => $this->getApplicationId(),
+            'Content-Type' => 'application/json'
+        );
+
+        $request = Requests::post('https://api.alveo.io/v1/sessions', $headers, '{}');
+        $_id = json_decode($request->body);
+        setcookie("alveo_sdk_php_id", $_id->_id, time() + 360000);
+        $this->setId($_id->_id);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProjectId()
+    {
+        return $this->projectId;
+    }
+
+    /**
+     * @param mixed $projectId
+     */
+    public function setProjectId($projectId)
+    {
+        $this->projectId = $projectId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApplicationId()
+    {
+        return $this->applicationId;
+    }
+
+    /**
+     * @param mixed $applicationId
+     */
+    public function setApplicationId($applicationId)
+    {
+        $this->applicationId = $applicationId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->_id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->_id = $id;
+    }
+
+    public function isAuth()
+    {
+        if (isset($_COOKIE['alveo_is_auth']) && ($_COOKIE['alveo_is_auth'] === 1)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 } 

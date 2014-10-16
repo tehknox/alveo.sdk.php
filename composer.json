@@ -2,8 +2,7 @@
     "name": "alveo/sdk",
     "description": "Alveo Labs PHP SDK.",
     "require": {
-        "rmccue/requests": ">=1.0",
-        "aura/session": "dev-master"
+        "rmccue/requests": ">=1.0"
     },
     "authors": [
         {
