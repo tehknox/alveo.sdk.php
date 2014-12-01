@@ -104,11 +104,16 @@ class Session {
         $request = Requests::put($endpoint . 'sessions/' . $this->getId(), $headers, '{"email": "' . $username . '", "password": "' . $password . '"}');
         $data = json_decode($request->body);
 
-        if (isset($data->customer_id)) {
-            setcookie("alveo_is_auth", true, time() + 360000);
+        if (isset($data->error)) {
+            if ($data->error == 401) {
+                return;
+            }
+        }
+        else if (isset($data->customer_id)) {
+            setcookie("alveo_is_auth", 1, time() + 360000);
             setcookie("alveo_customer_id", $data->customer_id, time() + 360000);
         } else {
-            setcookie("alveo_is_auth", false, time() + 360000);
+            setcookie("alveo_is_auth", 0, time() + 360000);
         }
 
     }
